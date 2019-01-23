@@ -30,22 +30,26 @@ if SERVER then
 	util.AddNetworkString("BroadcastURL")
 	util.AddNetworkString("CachedBroadcastURL")
 
-	local ENTITY = FindMetaTable("Entity")
-
-	function ENTITY:EmitSoundURL(url)
+	function PlaySoundURL(url, pos)
 		if not CachedURLs[url] then
 			print(prefix .. "Uncached play of " .. url .. "! Please cache your URLs!")
 			net.Start("BroadcastURL")
 			net.WriteString(url)
-			net.WriteVector(self:GetPos())
+			net.WriteVector(pos)
 			net.Broadcast()
 			return
 		end
 
 		net.Start("CachedBroadcastURL")
 		net.WriteInt(CachedURLs[url], bits)
-		net.WriteVector(self:GetPos())
+		net.WriteVector(pos)
 		net.Broadcast()
+	end
+
+	local ENTITY = FindMetaTable("Entity")
+
+	function ENTITY:EmitSoundURL(url)
+		PlaySoundURL(url, self:GetPos())
 	end
 else
 	net.Receive("BroadcastURL", function(len)
