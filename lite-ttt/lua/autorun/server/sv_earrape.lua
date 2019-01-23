@@ -20,7 +20,7 @@ if SERVER then
 	end)
 else
 	net.Receive("TTT.Earrape", function(len)
-		sound.PlayURL("https://sirfrancisbillard.github.io/billard-radio/sound/earrape/earrape_" .. math.random(13) .. ".wav", "", function(station)
+		sound.PlayURL("https://sirfrancisbillard.github.io/billard-radio/sound/earrape/earrape_" .. math.random(13) .. ".mp3", "", function(station)
 			if IsValid(station) then
 				station:Play()
 			end

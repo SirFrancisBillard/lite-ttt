@@ -84,7 +84,7 @@ function SWEP:PrimaryAttack()
 		net.Broadcast()
 
 		self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-		self.Owner:EmitSoundURL("https://sirfrancisbillard.github.io/billard-radio/sound/jihad/jihad_" .. math.random(2) .. ".wav")
+		self.Owner:EmitSoundURL("https://sirfrancisbillard.github.io/billard-radio/sound/jihad/jihad_" .. math.random(2) .. ".mp3")
 
 		local ply = self.Owner
 		timer.Simple(1, function()
@@ -106,7 +106,7 @@ function SWEP:PrimaryAttack()
 			timer.Simple(0.5, function()
 				if not pos then return end
 
-				PlaySoundURL("https://sirfrancisbillard.github.io/billard-radio/sound/jihad/islam.wav", pos)
+				PlaySoundURL("https://sirfrancisbillard.github.io/billard-radio/sound/jihad/islam.mp3", pos)
 			end)
 		end)
 	end
