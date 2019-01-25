@@ -31,6 +31,5 @@ local function PrecacheURLs()
 	end
 end
 
-PrecacheURLS()
 hook.Add("Initialize", "BroadcastURL.PrecacheURLS", PrecacheURLs)
 hook.Add("OnReloaded", "BroadcastURL.PrecacheURLS", PrecacheURLs)

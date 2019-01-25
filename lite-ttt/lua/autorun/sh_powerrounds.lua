@@ -3,32 +3,27 @@ if SERVER then
 	util.AddNetworkString("TTT.DisplayPowerRound")
 end
 
-TTT_PowerRoundChance = 8
+TTT_PowerRoundChance = 5
 TTT_CurrentPowerRound = false
 
 TTT_PowerRounds = {
 	["railgun"] = {
 		name = "Railguns Only",
 		desc = "All guns have been replaced by Railguns.",
-		PrepareRound = function()
-			local ttt_weps = ents.TTT.GetSpawnableSWEPs()
-			local ttt_ents = ents.TTT.GetSpawnableAmmo()
-			for k, v in pairs(ents.GetAll()) do
-				if IsValid(v) and (table.HasValue(ttt_weps, v:GetClass()) or table.HasValue(ttt_ents, v:GetClass())) then
-					v:SetSolid(SOLID_NONE)
-
-					local rent = ents.Create(table.HasValue(ttt_weps, v:GetClass()) and "weapon_ttt_railgun" or "item_box_buckshot_ttt")
-					rent:SetPos(v:GetPos())
-					rent:SetAngles(v:GetAngles())
-					rent:Spawn()
-
-					rent:Activate()
-					rent:PhysWake()
-
-					v:Remove()
-				end
-			end
-		end
+		ReplaceGuns = "weapon_ttt_railgun",
+		ReplaceAmmo = "item_box_buckshot_ttt"
+	},
+	["huge"] = {
+		name = "H.U.G.E Only",
+		desc = "Good luck, and may god have mercy on your soul.",
+		ReplaceGuns = "weapon_zm_sledge",
+		ReplaceAmmo = "weapon_zm_sledge"
+	},
+	["bloodbath"] = {
+		name = "Blood Bath",
+		desc = "Knives only, karma is disabled.",
+		ReplaceGuns = "weapon_ttt_knife",
+		ReplaceAmmo = "weapon_ttt_knife"
 	},
 	["war"] = {
 		name = "War",
@@ -65,6 +60,39 @@ hook.Add("TTTPrepareRound", "PowerRounds.PrepareRound", function()
 		if isfunction(TTT_PowerRounds[TTT_CurrentPowerRound].PrepareRound) then
 			TTT_PowerRounds[TTT_CurrentPowerRound].PrepareRound()
 		end
+		if isstring(TTT_PowerRounds[TTT_CurrentPowerRound].ReplaceGuns) or isstring(TTT_PowerRounds[TTT_CurrentPowerRound].ReplaceAmmo) then
+			local gun = TTT_PowerRounds[TTT_CurrentPowerRound].ReplaceGuns
+			local ammo = TTT_PowerRounds[TTT_CurrentPowerRound].ReplaceAmmo
+			timer.Simple(0.1, function()
+				local function replace_ent(ent, class)
+					ent:SetSolid(SOLID_NONE)
+
+					local rent = ents.Create(class)
+					rent:SetPos(ent:GetPos())
+					rent:SetAngles(ent:GetAngles())
+					rent:Spawn()
+
+					rent:Activate()
+					rent:PhysWake()
+
+					ent:Remove()
+				end
+				if gun then
+					for k, v in pairs(ents.FindByClass("weapon_*")) do
+						if IsValid(v) and not IsValid(v:GetOwner()) and v:GetClass() ~= railgun then
+							replace_ent(v, gun)
+						end
+					end
+				end
+				if ammo then
+					for k, v in pairs(ents.FindByClass("item_*_ttt")) do
+						if IsValid(v) and not IsValid(v:GetOwner()) and v:GetClass() ~= ammo then
+							replace_ent(v, ammo)
+						end
+					end
+				end
+			end)
+		end
 		net.Start("TTT.DisplayPowerRound")
 		net.WriteString(TTT_CurrentPowerRound)
 		net.Broadcast()
@@ -93,6 +121,7 @@ hook.Add("TTTEndRound", "PowerRounds.EndRound", function(result)
 	-- pick for next round
 	if ForceNextRound and TTT_PowerRounds[ForceNextRound] then
 		TTT_CurrentPowerRound = ForceNextRound
+		ForceNextRound = false
 	else
 		if math.random(TTT_PowerRoundChance) == TTT_PowerRoundChance then
 			local x, y = table.Random(TTT_PowerRounds)

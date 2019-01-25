@@ -134,7 +134,7 @@ if SERVER then
             local phexp = ents.Create("env_physexplosion")
             if IsValid(phexp) then
                phexp:SetPos(self:GetPos())
-               phexp:SetKeyValue("magnitude", 100)
+               phexp:SetKeyValue("magnitude", 1000)
                phexp:SetKeyValue("radius", 128)
                phexp:SetKeyValue("spawnflags", 1 + 2)
                phexp:Spawn()

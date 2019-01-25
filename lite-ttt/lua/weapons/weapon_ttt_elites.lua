@@ -53,7 +53,7 @@ function SWEP:PrimaryAttack(worldsnd)
 		local hp = owner:Health()
 		local max = owner:GetMaxHealth()
 		local quart = max / 4
-		delay = delay * ((math.max(hp, quart) / max) * 2)
+		delay = delay * (math.max(hp, quart) / max)
 		damage = damage * (max / math.max(hp, quart))
 	end
 

@@ -12,7 +12,10 @@ if CLIENT then
 
    SWEP.EquipMenuData = {
       type = "item_weapon",
-      desc = "knife_desc"
+      desc = [[
+Kills all targets instantly and
+silently, but only has a single use.
+Can be thrown using secondary fire.]]
    };
 
    SWEP.Icon                = "vgui/ttt/icon_knife"
@@ -25,7 +28,7 @@ SWEP.UseHands               = true
 SWEP.ViewModel              = "models/weapons/cstrike/c_knife_t.mdl"
 SWEP.WorldModel             = "models/weapons/w_knife_t.mdl"
 
-SWEP.Primary.Damage         = 50
+SWEP.Primary.Damage         = 120
 SWEP.Primary.ClipSize       = -1
 SWEP.Primary.DefaultClip    = -1
 SWEP.Primary.Automatic      = true

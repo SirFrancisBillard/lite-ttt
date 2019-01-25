@@ -5,7 +5,7 @@ DEFINE_BASECLASS "weapon_tttbase"
 SWEP.HoldType               = "physgun"
 
 if CLIENT then
-   SWEP.PrintName           = "newton_name"
+   SWEP.PrintName           = "Newton Blaster"
    SWEP.Slot                = 7
 
    SWEP.ViewModelFlip       = false
@@ -25,8 +25,8 @@ SWEP.Primary.Ammo          = "none"
 SWEP.Primary.ClipSize      = -1
 SWEP.Primary.DefaultClip   = -1
 SWEP.Primary.Automatic     = true
-SWEP.Primary.Delay         = 3
-SWEP.Primary.Cone          = 0.005
+SWEP.Primary.Delay         = 0.6
+SWEP.Primary.Cone          = 0.1
 SWEP.Primary.Sound         = Sound( "weapons/ar2/fire1.wav" )
 SWEP.Primary.SoundLevel    = 54
 
@@ -34,7 +34,7 @@ SWEP.Secondary.ClipSize    = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic   = false
 SWEP.Secondary.Ammo        = "none"
-SWEP.Secondary.Delay       = 0.5
+SWEP.Secondary.Delay       = 1
 
 SWEP.NoSights              = true
 
@@ -51,7 +51,7 @@ AccessorFuncDT(SWEP, "charge", "Charge")
 SWEP.IsCharging            = false
 SWEP.NextCharge            = 0
 
-local CHARGE_AMOUNT = 0.02
+local CHARGE_AMOUNT = 0.005
 local CHARGE_DELAY = 0.025
 
 local math = math
@@ -85,7 +85,7 @@ function SWEP:SecondaryAttack()
    self.IsCharging = true
 end
 
-function SWEP:FirePulse(force_fwd, force_up)
+function SWEP:FirePulse(force_fwd, force_up, ischarged)
    if not IsValid(self:GetOwner()) then return end
 
    self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
@@ -106,6 +106,11 @@ function SWEP:FirePulse(force_fwd, force_up)
    bullet.Force  = force_fwd / 10
    bullet.Damage = 1
    bullet.TracerName = "AirboatGunHeavyTracer"
+
+   if ischarged then
+      bullet.Num = num * ((force_up - 100) / 5)
+      bullet.Spread = Vector( 0.7, 0.7, 0 )
+   end
 
    local owner = self:GetOwner()
    local fwd = force_fwd / num
@@ -154,7 +159,7 @@ function SWEP:ChargedAttack()
    self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
    self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
 
-   self:FirePulse(force_fwd, force_up)
+   self:FirePulse(force_fwd, force_up, true)
 end
 
 function SWEP:PreDrop(death_drop)
