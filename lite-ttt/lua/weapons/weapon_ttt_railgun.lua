@@ -33,7 +33,7 @@ SWEP.Primary.DefaultClip   = 4
 SWEP.Primary.Automatic     = true
 SWEP.Primary.NumShots      = 8
 SWEP.Primary.Sound         = Sound( "Weapon_XM1014.Single" )
-SWEP.Primary.Recoil        = 40 -- shitload of recoil
+SWEP.Primary.Recoil        = 40 * 0 -- shitload of recoil
 
 SWEP.AutoSpawnable         = false
 SWEP.Spawnable             = false

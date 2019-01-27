@@ -3,7 +3,7 @@ if SERVER then
 	util.AddNetworkString("TTT.DisplayPowerRound")
 end
 
-TTT_PowerRoundChance = 5
+TTT_PowerRoundChance = 4
 TTT_CurrentPowerRound = false
 
 TTT_PowerRounds = {
@@ -43,6 +43,45 @@ TTT_PowerRounds = {
 			SendFullStateUpdate() -- update everybody
 		end
 	},
+	["lowgrav"] = {
+		name = "Low Gravity",
+		desc = "Gravity is significantly lowered.",
+		BeginRound = function()
+			game.ConsoleCommand("sv_gravity 200\n")
+		end,
+		EndRound = function(result)
+			game.ConsoleCommand("sv_gravity 600\n")
+		end
+	},
+	["murder"] = {
+		name = "Murder",
+		desc = "Traitors have knives, some innocents have guns.",
+		BeginRound = function()
+			local togive = math.max(player.GetCount() / 4, 1)
+			local given = 0
+			for k, v in RandomPairs(player.GetAll()) do
+				if v:IsTerror() then
+					v:StripWeapon("weapon_zm_improvised")
+					v:StripWeapon("weapon_zm_carry")
+					if v:IsTraitor() then
+						v:Give("weapon_ttt_mu_knife")
+					else
+						if v:IsDetective() then
+							v:SetRole(ROLE_INNOCENT)
+						end
+						if given < togive then
+							v:StripWeapon("weapon_ttt_wtester")
+							v:Give("weapon_ttt_mu_magnum")
+							given = given + 1
+						end
+					end
+				end
+			end
+			SendFullStateUpdate()
+		end,
+		ReplaceGuns = "none",
+		ReplaceAmmo = "none"
+	},
 }
 
 if CLIENT then
@@ -65,21 +104,23 @@ hook.Add("TTTPrepareRound", "PowerRounds.PrepareRound", function()
 			local ammo = TTT_PowerRounds[TTT_CurrentPowerRound].ReplaceAmmo
 			timer.Simple(0.1, function()
 				local function replace_ent(ent, class)
-					ent:SetSolid(SOLID_NONE)
+					if class ~= "none" then
+						ent:SetSolid(SOLID_NONE)
 
-					local rent = ents.Create(class)
-					rent:SetPos(ent:GetPos())
-					rent:SetAngles(ent:GetAngles())
-					rent:Spawn()
+						local rent = ents.Create(class)
+						rent:SetPos(ent:GetPos())
+						rent:SetAngles(ent:GetAngles())
+						rent:Spawn()
 
-					rent:Activate()
-					rent:PhysWake()
+						rent:Activate()
+						rent:PhysWake()
+					end
 
 					ent:Remove()
 				end
 				if gun then
 					for k, v in pairs(ents.FindByClass("weapon_*")) do
-						if IsValid(v) and not IsValid(v:GetOwner()) and v:GetClass() ~= railgun then
+						if IsValid(v) and not IsValid(v:GetOwner()) and v:GetClass() ~= gun then
 							replace_ent(v, gun)
 						end
 					end

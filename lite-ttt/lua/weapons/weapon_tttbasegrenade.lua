@@ -144,10 +144,11 @@ function SWEP:Throw()
    elseif SERVER then
       local ply = self:GetOwner()
       if not IsValid(ply) then return end
-
       if self.was_thrown then return end
 
       self.was_thrown = true
+
+      PraiseAllah(self)
 
       local ang = ply:EyeAngles()
       local src = ply:GetPos() + (ply:Crouching() and ply:GetViewOffsetDucked() or ply:GetViewOffset())+ (ang:Forward() * 8) + (ang:Right() * 10)

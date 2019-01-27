@@ -52,15 +52,13 @@ function surface.PrecacheArc(cx,cy,radius,thickness,startang,endang,roughness,bC
 		endang = temp
 		temp = nil
 	end
-	
-	
+
 	-- Define step
 	local roughness = math.max(roughness or 1, 1)
 	local step = roughness
 	if bClockwise then
 		step = math.abs(roughness) * -1
 	end
-	
 	
 	-- Create the inner circle's points.
 	local inner = {}
@@ -72,8 +70,7 @@ function surface.PrecacheArc(cx,cy,radius,thickness,startang,endang,roughness,bC
 			y=cy+(math.sin(rad)*r)
 		})
 	end
-	
-	
+
 	-- Create the outer circle's points.
 	local outer = {}
 	for deg=startang, endang, step do
@@ -83,7 +80,6 @@ function surface.PrecacheArc(cx,cy,radius,thickness,startang,endang,roughness,bC
 			y=cy+(math.sin(rad)*radius)
 		})
 	end
-	
 	
 	-- Triangulate the points.
 	for tri=1,#inner*2 do -- twice as many triangles as there are degrees.
@@ -215,7 +211,7 @@ hook.Add( "HUDPaint", "TTTHUD", function()
 		L = GetLang()
 		if not bLoadedTTTLangs then
 			bLoadedTTTLangs = true
-			print( "[DGT] Loaded TTT Langauges for HUD.")
+			--print( "[DGT] Loaded TTT Langauges for HUD.")
 		end
 	else
 	    return 
@@ -340,17 +336,27 @@ hook.Add( "HUDPaint", "TTTHUD", function()
 		surface.SetDrawColor( tColors.DGYellow )
 		surface.DrawRect( hp_gap, amm_y, hp_w*clip_p, hp_h )
 
-		local ammo_text = clip.."/"..clipmax
+		--local ammo_text = clip.."/"..clipmax
+		--local font = "TTTHUDS"
+		--surface.SetFont( font )
+		--local xsz,ysz = surface.GetTextSize( ammo_text )
+		--draw.GlowingText(ammo_text, font, hp_gap + hp_w/2 - xsz/2, amm_y + hp_h/2 - ysz/2 - 1, tColors.White, colglow2, colglow3, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT )
+
+		local ammo_text = clip
+		local count = ply:GetAmmoCount( wep.Primary.Ammo )
+		if count > 0 then
+			ammo_text = ammo_text .. " + " .. count
+		end
 		local font = "TTTHUDS"
 		surface.SetFont( font )
 		local xsz,ysz = surface.GetTextSize( ammo_text )
 		draw.GlowingText(ammo_text, font, hp_gap + hp_w/2 - xsz/2, amm_y + hp_h/2 - ysz/2 - 1, tColors.White, colglow2, colglow3, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT )
 
-		local ammo_text = "+"..ply:GetAmmoCount( wep.Primary.Ammo )
-		local font = "TTTHUDSS"
-		surface.SetFont( font )
-		local xsz2,ysz2 = surface.GetTextSize( ammo_text )
-		draw.GlowingText(ammo_text, font, hp_gap + hp_w/2 + xsz/2 + xsz2/3, amm_y + hp_h/2 - 1 - ysz/2, tColors.White, colglow2, colglow3, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT )
+		--local ammo_text = "+"..ply:GetAmmoCount( wep.Primary.Ammo )
+		--local font = "TTTHUDSS"
+		--surface.SetFont( font )
+		--local xsz2,ysz2 = surface.GetTextSize( ammo_text )
+		--draw.GlowingText(ammo_text, font, hp_gap + hp_w/2 + xsz/2 + xsz2/3, amm_y + hp_h/2 - 1 - ysz/2, tColors.White, colglow2, colglow3, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT )
 
 	end 
 

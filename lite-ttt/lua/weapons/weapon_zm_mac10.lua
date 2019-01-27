@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-SWEP.HoldType            = "ar2"
+SWEP.HoldType            = "smg"
 
 if CLIENT then
    SWEP.PrintName        = "MAC10"

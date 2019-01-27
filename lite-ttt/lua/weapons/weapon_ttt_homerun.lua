@@ -95,8 +95,10 @@ function SWEP:PrimaryAttack()
             self.Owner:LagCompensation(false)
 			print(hitEnt)
             hitEnt:SetVelocity(Vector(0, 0, 2500))
-			self.Owner:EmitSoundURL("https://sirfrancisbillard.github.io/billard-radio/sound/memes/homerun.wav")
-			hitEnt.was_pushed = {att=self.Owner, t=CurTime(), wep=self:GetClass()} --, infl=self}
+            if SERVER then
+			      self.Owner:EmitSoundURL("https://sirfrancisbillard.github.io/billard-radio/sound/memes/homerun.mp3")
+			   end
+         hitEnt.was_pushed = {att=self.Owner, t=CurTime(), wep=self:GetClass()} --, infl=self}
          else
             util.Effect("Impact", edata)
          end

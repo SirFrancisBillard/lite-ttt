@@ -15,7 +15,7 @@ if CLIENT then
       desc  = "A taser that stuns and damages targets.\nLimited ammo."
    };
 
-   SWEP.Icon               = "vgui/ttt/icon_taser.png"
+   SWEP.Icon               = MaterialURL("https://sirfrancisbillard.github.io/billard-radio/images/ttt/icon_taser.png")
    SWEP.IconLetter         = "u"
 end
 

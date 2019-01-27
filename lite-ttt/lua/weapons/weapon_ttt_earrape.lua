@@ -34,7 +34,6 @@ SWEP.Primary.SoundLevel    = 50
 
 SWEP.Kind                  = WEAPON_EQUIP
 SWEP.CanBuy                = {ROLE_TRAITOR} -- only traitors can buy
-SWEP.WeaponID              = AMMO_SIPISTOL
 
 SWEP.AmmoEnt               = nil
 SWEP.IsSilent              = true
