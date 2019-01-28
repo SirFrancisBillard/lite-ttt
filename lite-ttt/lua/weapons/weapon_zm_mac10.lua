@@ -39,7 +39,7 @@ SWEP.WorldModel          = "models/weapons/w_smg_mac10.mdl"
 SWEP.IronSightsPos       = Vector(-8.921, -9.528, 2.9)
 SWEP.IronSightsAng       = Vector(0.699, -5.301, -7)
 
-SWEP.DeploySpeed         = 3
+SWEP.DeploySpeed         = 1
 
 function SWEP:GetHeadshotMultiplier(victim, dmginfo)
    local att = dmginfo:GetAttacker()
@@ -51,3 +51,20 @@ function SWEP:GetHeadshotMultiplier(victim, dmginfo)
    -- decay from 3.2 to 1.7
    return 1.7 + math.max(0, (1.5 - 0.002 * (d ^ 1.25)))
 end
+
+SWEP.HoldType = "pistol"
+SWEP.ViewModelFOV = 54
+SWEP.ViewModelFlip = false
+SWEP.UseHands = true
+SWEP.ViewModel = "models/weapons/cstrike/c_smg_mac10.mdl"
+SWEP.WorldModel = "models/weapons/w_smg_mac10.mdl"
+SWEP.ShowViewModel = true
+SWEP.ShowWorldModel = true
+SWEP.ViewModelBoneMods = {
+	["ValveBiped.Bip01_L_Clavicle"] = { scale = Vector(0.009, 0.009, 0.009), pos = Vector(-30, 0, 0), angle = Angle(0, 0, 0) }
+}
+SWEP.IronSightsPos = Vector(-9.801, 0, 2.88)
+SWEP.IronSightsAng = Vector(4.8, -2.3, -64)
+
+SWEP.VElements = {}
+

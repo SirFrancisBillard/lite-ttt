@@ -1,7 +1,6 @@
 
 local HeadshotSound = "https://sirfrancisbillard.github.io/billard-radio/sound/misc/headshot.mp3"
 
-
 gPlayHeadshotSound = true
 
 if SERVER then

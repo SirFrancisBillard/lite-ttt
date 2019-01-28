@@ -38,3 +38,9 @@ SWEP.WorldModel            = "models/weapons/w_pist_fiveseven.mdl"
 
 SWEP.IronSightsPos         = Vector(-5.95, -4, 2.799)
 SWEP.IronSightsAng         = Vector(0, 0, 0)
+
+SWEP.ViewModelBoneMods = {
+	["ValveBiped.Bip01_L_Clavicle"] = { scale = Vector(0.009, 0.009, 0.009), pos = Vector(-30, 0, 0), angle = Angle(0, 0, 0) }
+}
+
+SWEP.VElements = {}

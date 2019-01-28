@@ -111,9 +111,9 @@ function draw.Arc(cx,cy,radius,thickness,startang,endang,roughness,color,bClockw
 	surface.DrawArc(surface.PrecacheArc(cx,cy,radius,thickness,startang,endang,roughness,bClockwise))
 end
 
-local disabled = { "TTTInfoPanel" }
+local disabled = { ["TTTInfoPanel"] = true }
 hook.Add( "HUDShouldDraw", "TTTOverwrite", function( name )
-	if table.HasValue( disabled, name ) then
+	if disabled[name] then
 		return false 
 	end
 end )
@@ -204,7 +204,7 @@ local xp_h = 5
 local ttt_health_label = CreateClientConVar("ttt_health_label", "0", true)
 local L 
 hook.Add( "HUDPaint", "TTTHUD", function()
-
+	if not LANG then return end
 	hud_drawsize = Lerp( FrameTime()*15, hud_drawsize, hud_desiredsize )
 	local GetLang = LANG.GetUnsafeLanguageTable
 	if GetLang then 

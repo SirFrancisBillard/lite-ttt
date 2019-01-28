@@ -46,7 +46,7 @@ TTT_PowerRounds = {
 	["lowgrav"] = {
 		name = "Low Gravity",
 		desc = "Gravity is significantly lowered.",
-		BeginRound = function()
+		PrepareRound = function()
 			game.ConsoleCommand("sv_gravity 200\n")
 		end,
 		EndRound = function(result)
@@ -87,6 +87,7 @@ TTT_PowerRounds = {
 if CLIENT then
 	net.Receive("TTT.DisplayPowerRound", function(len)
 		local round = net.ReadString()
+		TTT_CurrentPowerRound = round
 		chat.AddText(Color(255, 0, 0), "POWER ROUND: ", TTT_PowerRounds[round].name)
 		chat.AddText(Color(255, 0, 0), TTT_PowerRounds[round].desc)
 	end)
@@ -169,6 +170,8 @@ hook.Add("TTTEndRound", "PowerRounds.EndRound", function(result)
 			TTT_CurrentPowerRound = y
 		else
 			TTT_CurrentPowerRound = false
+			-- TEMPORARY FIX
+			BroadcastLua("TTT_CurrentPowerRound = false")
 		end
 	end
 end)

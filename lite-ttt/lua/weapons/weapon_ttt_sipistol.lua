@@ -60,3 +60,9 @@ function SWEP:WasBought(buyer)
       buyer:GiveAmmo( 20, "Pistol" )
    end
 end
+
+SWEP.ViewModelBoneMods = {
+	["ValveBiped.Bip01_L_Clavicle"] = { scale = Vector(0.009, 0.009, 0.009), pos = Vector(-30, 0, 0), angle = Angle(0, 0, 0) }
+}
+
+SWEP.VElements = {}

@@ -30,12 +30,19 @@ local ChatCommands = {
 		ply:Spawn()
 		SendFullStateUpdate()
 	end,
+	["!radar"] = function(ply)
+		ply:AddEquipmentItem(EQUIP_RADAR)
+		timer.Simple(1, function()
+			if not IsValid(ply) or not ply:IsPlayer() then return end
+			ply:ConCommand("ttt_radar_scan")
+		end)
+	end,
 }
 
 hook.Add("PlayerSay", "ServerSidedChatCommands", function(ply, txt)
 	if not ply:IsAdmin() then return end
 
-	local func = ChatCommands[string.lower(strText)]
+	local func = ChatCommands[string.lower(txt)]
 	if isfunction(func) then
 		func(ply)
 		return ""
