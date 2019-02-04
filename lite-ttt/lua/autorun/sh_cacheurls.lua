@@ -1,5 +1,5 @@
 
--- Put links to sounds to cache in here
+-- Put links of sounds to cache in here
 -- All URLs *MUST* be cached on both client AND server!
 
 local prefix = "https://sirfrancisbillard.github.io/billard-radio/sound/"
@@ -22,12 +22,9 @@ local SoundURLs = {
 
 -- Actual code below this line
 
-BroadcastURL = BroadcastURL or {}
-
 local function PrecacheURLs()
 	for _, v in ipairs(SoundURLs) do
-		local full = prefix .. v .. suffix
-		BroadcastURL.CacheURL(full)
+		BroadcastURL.CacheURL(prefix .. v .. suffix)
 	end
 end
 

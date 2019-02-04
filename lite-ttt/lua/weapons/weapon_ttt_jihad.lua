@@ -106,7 +106,7 @@ function SWEP:PrimaryAttack()
 			timer.Simple(0.5, function()
 				if not pos then return end
 
-				PlaySoundURL("https://sirfrancisbillard.github.io/billard-radio/sound/jihad/islam.mp3", pos)
+				EmitSoundURL("https://sirfrancisbillard.github.io/billard-radio/sound/jihad/islam.mp3", pos)
 			end)
 		end)
 	end
