@@ -17,14 +17,10 @@ CoffeeCup.Models = {
 
 function CoffeeCup.CheckRequirements()
 	if CoffeeCup.ReplacementTypes then
-		CoffeeCup.EntityType = table.Random(CoffeeCup.ReplacementTypes)
-		CoffeeCup.PropToReplace = table.Random(ents.FindByClass(CoffeeCup.EntityType))
-		if not CoffeeCup.PropToReplace and #CoffeeCup.ReplacementTypes > 0 then
-			table.RemoveByValue(CoffeeCup.ReplacementTypes, CoffeeCup.EntityType)
-			CoffeeCup.CheckRequirements()
-		else
-			CoffeeCup.GenerateEntity()
-		end
+		CoffeeCup.EntityType = "prop_physics"
+		local found = ents.FindByClass(CoffeeCup.EntityType)
+		if not found or #found < 1 then return end
+		CoffeeCup.PropToReplace = table.Random(found)
 	end
 end
 

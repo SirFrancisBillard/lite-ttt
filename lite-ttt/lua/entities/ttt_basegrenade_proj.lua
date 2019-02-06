@@ -1,10 +1,7 @@
--- common grenade projectile code
-
 AddCSLuaFile()
 
 ENT.Type = "anim"
 ENT.Model = Model("models/weapons/w_eq_flashbang_thrown.mdl")
-
 
 AccessorFunc( ENT, "thrower", "Thrower")
 
@@ -15,10 +12,13 @@ end
 function ENT:Initialize()
    self:SetModel(self.Model)
 
-   self:PhysicsInit(SOLID_VPHYSICS)
+   if SERVER then self:PhysicsInitSphere(1.5,"grenade") end
+
    self:SetMoveType(MOVETYPE_VPHYSICS)
    self:SetSolid(SOLID_BBOX)
    self:SetCollisionGroup(COLLISION_GROUP_PROJECTILE)
+
+   --self:GetPhysicsObject():SetMass( 1 )
 
    if SERVER then
       self:SetExplodeTime(0)
@@ -39,7 +39,27 @@ function ENT:Explode(tr)
    ErrorNoHalt("ERROR: BaseGrenadeProjectile explosion code not overridden!\n")
 end
 
+function ENT:ReflectVector( dir, norm )
+   local normal = norm:GetNormalized()
+   local dot = dir:DotProduct( normal )
+   return dir - 2*dot*normal
+end
+
+function ENT:PhysicsCollide(data,phys)
+   local reflectionDir = self:ReflectVector( data.OurOldVelocity, data.HitNormal )
+   local efficiency = 0.55
+   phys:SetVelocityInstantaneous( reflectionDir*efficiency )
+   if data.Speed > 50 then
+         self.Entity:EmitSound(Sound("weapons/flashbang/grenade_hit1.wav"))
+   end 
+end
+
 function ENT:Think()
+
+   if SERVER then
+      self:GetPhysicsObject():AddAngleVelocity( -0.99 * self:GetPhysicsObject():GetAngleVelocity() )
+   end
+
    local etime = self:GetExplodeTime() or 0
    if etime != 0 and etime < CurTime() then
       -- if thrower disconnects before grenade explodes, just don't explode
